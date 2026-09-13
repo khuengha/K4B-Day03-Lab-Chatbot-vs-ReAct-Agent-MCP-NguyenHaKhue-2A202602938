@@ -11,41 +11,40 @@ from typing import Dict, Any
 # ==============================================================================
 
 TOOLS_SCHEMA = [
-    # Tool 1: Đã được định nghĩa mẫu sẵn cho Học viên tham khảo
     {
-        "name": "academic_query",
-        "description": "Tra cứu hồ sơ và thông tin học vụ của sinh viên VinUni bằng mã sinh viên.",
+        "name": "route_query",
+        "description": "Tra cứu lộ trình, lịch chạy và giá vé tháng của tuyến xe bus điện VinBus theo mã tuyến.",
         "parameters": {
             "type": "object",
             "properties": {
-                "student_id": {
+                "route_code": {
                     "type": "string",
-                    "description": "Mã sinh viên cần tra cứu (ví dụ: 'SV2026001')"
+                    "description": "Mã tuyến xe cần tra cứu (Ví dụ: 'OCT1')"
                 }
             },
-            "required": ["student_id"]
+            "required": ["route_code"] 
         }
     },
-    
-    # --------------------------------------------------------------------------
-    # TODO 1.2: HỌC VIÊN HOÀN THIỆN TOOL SCHEMA CHO 'schedule_appointment'
-    # 🎯 YÊU CẦU THIẾT KẾ SCHEMA (JSON SCHEMA STANDARD):
-    # 1. Tool dùng để đặt lịch hẹn tư vấn học vụ với Cố vấn học tập VinUni.
-    # 2. Thiết kế các tham số (properties) để LLM trích xuất:
-    #    - student_id (string): Mã sinh viên cần đặt lịch (ví dụ: 'SV2026001')
-    #    - datetime_str (string): Thời gian hẹn (ví dụ: '14:00 15/09/2026')
-    #    - advisor_name (string): Tên cố vấn học tập
-    # 3. Khai báo danh sách các trường bắt buộc (required).
-    # --------------------------------------------------------------------------
     {
-        "name": "schedule_appointment",
-        "description": "Đặt lịch hẹn tư vấn học vụ với Cố vấn học tập VinUni.",
+        "name": "register_monthly_ticket",
+        "description": "Đăng ký vé tháng VinBus cho khách hàng trên một tuyến xe cụ thể.",
         "parameters": {
             "type": "object",
             "properties": {
-                # TODO 1.2: Khai báo các thuộc tính tham số cho Tool tại đây...
+                "customer_id": {
+                    "type": "string",
+                    "description": "Mã khách hàng (Ví dụ: KH202602938)"
+                },
+                "route_code": {
+                    "type": "string",
+                    "description": "Mã tuyến xe muốn đăng ký vé tháng (Ví dụ: 'E10')"
+                },
+                "start_date": {
+                    "type": "string",
+                    "description": "Ngày bắt đầu hiệu lực vé tháng (Ví dụ '13/09/2026')"
+                }
             },
-            "required": [] # TODO 1.2: Khai báo danh sách các trường bắt buộc tại đây...
+            "required": ["customer_id", "route_code", "start_date"] 
         }
     }
 ]
@@ -55,57 +54,62 @@ TOOLS_SCHEMA = [
 # ==============================================================================
 
 MOCK_DATABASE = {
-    "SV2026001": {
-        "full_name": "Nguyễn Văn An",
-        "class": "AI-K4",
-        "gpa": 3.85,
-        "email": "an.nv@vinuni.edu.vn",
-        "status": "Đang học",
-        "advisor": "PGS.TS Nguyễn Văn A"
+    "OCT1": {
+        "route_name": "Tuyến OCT1: KĐT Royal City -> Ocean City",
+        "stops": ["Times City", "Tòa S2.09", "Tòa S2.15", "Trường Vinschool Ocean Park 2", "Bệnh viện Vinmec"],
+        "first_trip": "5:00",
+        "last_trip": "23:59",
+        "monthly_fare_vnd": 300000,
+        "status": "Đang hoạt động"
     },
-    "SV2026002": {
-        "full_name": "Trần Thị Bình",
-        "class": "AI-K4",
-        "gpa": 3.60,
-        "email": "binh.tt@vinuni.edu.vn",
-        "status": "Đang học",
-        "advisor": "TS. Lê Thị B"
-    }
+    "E10": {
+        "route_name": "Tuyến E10: KĐT Ocean Park -> Nội Bài",
+        "stops": ["Đại học VinUni", "Aeon Mall Long Biên", "Hồ Lâm Du", "Nhà ga hàng hóa Nội Bài", "Sân bay Nội Bài (Nhà ga T2)"],
+        "first_trip": "5:00",
+        "last_trip": "22:30",
+        "monthly_fare_vnd": 250000,
+        "status": "Đang hoạt động"
+    },
 }
 
 
-def execute_academic_query(student_id: str) -> str:
-    """Thực thi tra cứu học vụ theo mã sinh viên"""
-    student = MOCK_DATABASE.get(student_id.strip().upper())
-    if student:
+def execute_route_query(route_code: str) -> str:
+    """Thực thi tra cứu lộ trình tuyến xe theo mã tuyến"""
+    route = MOCK_DATABASE.get(route_code.strip().upper())
+    if route:
         return json.dumps({
             "status": "SUCCESS",
-            "student_id": student_id,
-            "data": student
+            "route_code": route_code,
+            "data": route
         }, ensure_ascii=False)
     else:
         return json.dumps({
             "status": "NOT_FOUND",
-            "message": f"Không tìm thấy dữ liệu sinh viên có mã '{student_id}'"
+            "message": f"Không tìm thấy tuyến xe có mã '{route_code}'"
         }, ensure_ascii=False)
 
 
-def execute_schedule_appointment(student_id: str, datetime_str: str, advisor_name: str = "PGS.TS Nguyễn Văn A") -> str:
-    """Thực thi đặt lịch hẹn tư vấn học vụ"""
+def execute_register_monthly_ticket(customer_id: str, route_code: str, start_date: str) -> str:
+    """Thực thi đăng ký vé tháng VinBus"""
+    if route_code.strip().upper() not in MOCK_DATABASE:
+        return json.dumps({
+            "status": "NOT_FOUND",
+            "message": f"Không tồn tại tuyến {route_code} để đăng ký vé tháng."
+        }, ensure_ascii=False)
     return json.dumps({
         "status": "SUCCESS",
-        "booking_id": f"BK-{student_id}-99",
-        "student_id": student_id,
-        "datetime": datetime_str,
-        "advisor": advisor_name,
-        "message": f"Đặt lịch thành công cho sinh viên {student_id} với {advisor_name} vào lúc {datetime_str}."
+        "booking_id": f"TK-{customer_id}-{route_code.upper()}",
+        "customer_id": customer_id,
+        "route_code": route_code.upper(),
+        "start_date": start_date,
+        "message": f"Đăng ký vé tháng thành công cho khách hàng {customer_id} trên tuyến {route_code.upper()} từ ngày {start_date}."
     }, ensure_ascii=False)
 
 
 # Router gọi tool thực tế
 TOOL_ROUTER = {
-    "academic_query": execute_academic_query,
-    "schedule_appointment": execute_schedule_appointment
+    "route_query": execute_route_query,
+    "register_monthly_ticket": execute_register_monthly_ticket
 }
 
 def dispatch_tool_call(tool_name: str, arguments: Dict[str, Any]) -> str:

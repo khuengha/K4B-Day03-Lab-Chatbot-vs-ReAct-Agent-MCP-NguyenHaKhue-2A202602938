@@ -1,0 +1,37 @@
+[
+  {
+    "id": "TC01",
+    "type": "direct_query",
+    "question": "Chào bạn, bạn có thể giới thiệu các dịch vụ của VinBus cho tôi không?",
+    "expected_behavior": "Chatbot trả lời trực tiếp từ System Prompt, không cần gọi bất kỳ Tool nào.",
+    "complexity": "Low"
+  },
+  {
+    "id": "TC02",
+    "type": "single_tool_query",
+    "question": "Hãy tra cứu lộ trình của tuyến xe bus điện OCT1 giúp tôi",
+    "expected_behavior": "Agent nhận diện nhu cầu tra cứu, tự động phát sinh Tool Call 'route_query' với mã OCT1.",
+    "complexity": "Medium"
+  },
+  {
+    "id": "TC03",
+    "type": "action_request",
+    "question": "Tôi là khách hàng KH202602938, hãy đăng ký vé tháng tuyến OCT1 giúp tôi bắt đầu từ ngày 13/09/2026.",
+    "expected_behavior": "Agent tự động phát sinh Tool Call 'register_monthly_ticket' với đúng customer_id, route_code và start_date.",
+    "complexity": "Medium"
+  },
+  {
+    "id": "TC04",
+    "type": "multi_step_reasoning",
+    "question": "Tôi là khách hàng KH202602938, cho tôi biết giá vé tháng tuyến OCT1 và đăng ký luôn vé tháng tuyến đó giúp tôi bắt đầu từ 13/09/2026.",
+    "expected_behavior": "Agent thực hiện chuỗi suy luận ReAct 2 bước: gọi route_query tra cứu tuyến trước, sau đó gọi register_monthly_ticket để đăng ký vé.",
+    "complexity": "High"
+  },
+  {
+    "id": "TC05",
+    "type": "edge_case_handling",
+    "question": "Hãy tra cứu tuyến xe bus điện E1900100 giúp tôi.",
+    "expected_behavior": "Agent nhận kết quả NOT_FOUND từ Tool và đưa ra phản hồi lịch sự, chính xác không bịa đặt dữ liệu tuyến xe.",
+    "complexity": "Medium"
+  }
+]

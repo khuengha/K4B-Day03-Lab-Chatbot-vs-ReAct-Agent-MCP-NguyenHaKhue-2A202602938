@@ -1,29 +1,152 @@
 [
   {
     "step": 1,
-    "query": "Chào bạn, bạn có thể giới thiệu quy chế học vụ cơ bản của Đại học VinUni không?",
+    "query": "Chào bạn, bạn có thể giới thiệu các dịch vụ của VinBus cho tôi không?",
     "action_type": "FINAL_ANSWER",
-    "thought": "Câu hỏi chung về quy chế học vụ, trả lời trực tiếp không cần gọi Tool.",
-    "output": "[Mock Agent Response]: Xin chào! Quy chế học vụ VinUni yêu cầu sinh viên tích lũy tối thiểu 120 tín chỉ và duy trì GPA trên 2.0 để tốt nghiệp.",
-    "latency_ms": 2845.93
+    "thought": "OpenAI phản hồi trực tiếp bằng văn bản (không cần gọi công cụ).",
+    "output": "VinBus cung cấp một số dịch vụ chính như sau:\n\n1. **Dịch vụ xe buýt điện**: VinBus sử dụng các phương tiện xe buýt điện để giảm thiểu ô nhiễm môi trường, giúp tăng cường sự bền vững trong giao thông công cộng.\n\n2. **Lịch trình tuyến**: VinBus có nhiều tuyến xe chạy qua các khu vực khác nhau, phục vụ nhu cầu đi lại của người dân và sinh viên.\n\n3. **Vé tháng**: VinBus cung cấp dịch vụ đăng ký vé tháng, thuận lợi cho hành khách có nhu cầu di chuyển thường xuyên.\n\n4. **Thẻ thanh toán**: Hành khách có thể sử dụng thẻ thanh toán điện tử để thuận tiện hơn khi sử dụng dịch vụ xe buýt.\n\n5. **Hệ thống thông tin hành khách**: VinBus cung cấp thông tin thời gian thực về lộ trình và tình trạng xe để hành khách có thể theo dõi và lên kế hoạch đi lại hợp lý.\n\nNếu bạn cần thêm thông tin cụ thể hơn về các tuyến xe hoặc giá vé, hãy cho tôi biết!",
+    "latency_ms": 6385.25
   },
   {
     "step": 1,
-    "query": "Hãy tra cứu thông tin học vụ của sinh viên SV2026001.",
+    "query": "Hãy tra cứu lộ trình của tuyến xe bus điện OCT1 giúp tôi",
     "action_type": "TOOL_EXECUTION",
-    "tool_name": "academic_query",
+    "tool_name": "route_query",
     "arguments": {
-      "student_id": "SV2026001"
+      "route_code": "OCT1"
     },
-    "observation": {},
-    "latency_ms": 799.12
+    "observation": {
+      "status": "SUCCESS",
+      "route_code": "OCT1",
+      "data": {
+        "route_name": "Tuyến OCT1: KĐT Royal City -> Ocean City",
+        "stops": [
+          "Times City",
+          "Tòa S2.09",
+          "Tòa S2.15",
+          "Trường Vinschool Ocean Park 2",
+          "Bệnh viện Vinmec"
+        ],
+        "first_trip": "5:00",
+        "last_trip": "23:59",
+        "monthly_fare_vnd": 300000,
+        "status": "Đang hoạt động"
+      }
+    },
+    "latency_ms": 1131.7
   },
   {
     "step": 2,
-    "query": "Hãy tra cứu thông tin học vụ của sinh viên SV2026001.",
+    "query": "Hãy tra cứu lộ trình của tuyến xe bus điện OCT1 giúp tôi",
     "action_type": "FINAL_ANSWER",
-    "thought": "Tổng hợp kết quả từ MCP Server thành công.",
-    "output": "Chưa thể trả lời chi tiết do chưa nhận được dữ liệu từ MCP Server (hãy hoàn thành TODO 2.1).",
-    "latency_ms": 10.0
+    "thought": "OpenAI phản hồi trực tiếp bằng văn bản (không cần gọi công cụ).",
+    "output": "Tuyến xe bus điện OCT1 có lộ trình từ KĐT Royal City đến Ocean City. Dưới đây là chi tiết về tuyến xe:\n\n- **Các điểm dừng:** \n  - Times City\n  - Tòa S2.09\n  - Tòa S2.15\n  - Trường Vinschool Ocean Park 2\n  - Bệnh viện Vinmec\n\n- **Giờ khởi hành đầu tiên:** 5:00\n- **Giờ khởi hành cuối cùng:** 23:59\n- **Giá vé tháng:** 300.000 VNĐ\n- **Trạng thái:** Đang hoạt động\n\nNếu bạn cần thêm thông tin gì khác, hãy cho tôi biết!",
+    "latency_ms": 2000.21
+  },
+  {
+    "step": 1,
+    "query": "Tôi là khách hàng KH202602938, hãy đăng ký vé tháng tuyến OCT1 giúp tôi bắt đầu từ ngày 13/09/2026.",
+    "action_type": "TOOL_EXECUTION",
+    "tool_name": "register_monthly_ticket",
+    "arguments": {
+      "customer_id": "KH202602938",
+      "route_code": "OCT1",
+      "start_date": "13/09/2026"
+    },
+    "observation": {
+      "status": "SUCCESS",
+      "booking_id": "TK-KH202602938-OCT1",
+      "customer_id": "KH202602938",
+      "route_code": "OCT1",
+      "start_date": "13/09/2026",
+      "message": "Đăng ký vé tháng thành công cho khách hàng KH202602938 trên tuyến OCT1 từ ngày 13/09/2026."
+    },
+    "latency_ms": 1157.42
+  },
+  {
+    "step": 2,
+    "query": "Tôi là khách hàng KH202602938, hãy đăng ký vé tháng tuyến OCT1 giúp tôi bắt đầu từ ngày 13/09/2026.",
+    "action_type": "FINAL_ANSWER",
+    "thought": "OpenAI phản hồi trực tiếp bằng văn bản (không cần gọi công cụ).",
+    "output": "Bạn đã đăng ký vé tháng thành công cho tuyến OCT1 với mã khách hàng KH202602938. Vé sẽ có hiệu lực từ ngày 13/09/2026. Mã đăng ký của bạn là TK-KH202602938-OCT1. Nếu cần thêm thông tin hoặc hỗ trợ, hãy cho tôi biết!",
+    "latency_ms": 1389.1
+  },
+  {
+    "step": 1,
+    "query": "Tôi là khách hàng KH202602938, cho tôi biết giá vé tháng tuyến OCT1 và đăng ký luôn vé tháng tuyến đó giúp tôi bắt đầu từ 13/09/2026.",
+    "action_type": "TOOL_EXECUTION",
+    "tool_name": "route_query",
+    "arguments": {
+      "route_code": "OCT1"
+    },
+    "observation": {
+      "status": "SUCCESS",
+      "route_code": "OCT1",
+      "data": {
+        "route_name": "Tuyến OCT1: KĐT Royal City -> Ocean City",
+        "stops": [
+          "Times City",
+          "Tòa S2.09",
+          "Tòa S2.15",
+          "Trường Vinschool Ocean Park 2",
+          "Bệnh viện Vinmec"
+        ],
+        "first_trip": "5:00",
+        "last_trip": "23:59",
+        "monthly_fare_vnd": 300000,
+        "status": "Đang hoạt động"
+      }
+    },
+    "latency_ms": 914.7
+  },
+  {
+    "step": 2,
+    "query": "Tôi là khách hàng KH202602938, cho tôi biết giá vé tháng tuyến OCT1 và đăng ký luôn vé tháng tuyến đó giúp tôi bắt đầu từ 13/09/2026.",
+    "action_type": "TOOL_EXECUTION",
+    "tool_name": "register_monthly_ticket",
+    "arguments": {
+      "customer_id": "KH202602938",
+      "route_code": "OCT1",
+      "start_date": "13/09/2026"
+    },
+    "observation": {
+      "status": "SUCCESS",
+      "booking_id": "TK-KH202602938-OCT1",
+      "customer_id": "KH202602938",
+      "route_code": "OCT1",
+      "start_date": "13/09/2026",
+      "message": "Đăng ký vé tháng thành công cho khách hàng KH202602938 trên tuyến OCT1 từ ngày 13/09/2026."
+    },
+    "latency_ms": 1113.0
+  },
+  {
+    "step": 3,
+    "query": "Tôi là khách hàng KH202602938, cho tôi biết giá vé tháng tuyến OCT1 và đăng ký luôn vé tháng tuyến đó giúp tôi bắt đầu từ 13/09/2026.",
+    "action_type": "FINAL_ANSWER",
+    "thought": "OpenAI phản hồi trực tiếp bằng văn bản (không cần gọi công cụ).",
+    "output": "Giá vé tháng cho tuyến xe OCT1 (Tuyến OCT1: KĐT Royal City -> Ocean City) là 300.000 VNĐ. \n\nĐồng thời, tôi đã đăng ký thành công vé tháng cho bạn với mã khách hàng KH202602938 trên tuyến OCT1, có hiệu lực từ ngày 13/09/2026. \n\nNếu bạn cần thêm thông tin nào khác, hãy cho tôi biết!",
+    "latency_ms": 1424.85
+  },
+  {
+    "step": 1,
+    "query": "Hãy tra cứu tuyến xe bus điện E1900100 giúp tôi.",
+    "action_type": "TOOL_EXECUTION",
+    "tool_name": "route_query",
+    "arguments": {
+      "route_code": "E1900100"
+    },
+    "observation": {
+      "status": "NOT_FOUND",
+      "message": "Không tìm thấy tuyến xe có mã 'E1900100'"
+    },
+    "latency_ms": 1012.23
+  },
+  {
+    "step": 2,
+    "query": "Hãy tra cứu tuyến xe bus điện E1900100 giúp tôi.",
+    "action_type": "FINAL_ANSWER",
+    "thought": "OpenAI phản hồi trực tiếp bằng văn bản (không cần gọi công cụ).",
+    "output": "Tuyến xe bus điện với mã E1900100 không tồn tại trong cơ sở dữ liệu. Vui lòng kiểm tra lại mã tuyến hoặc cung cấp một mã tuyến khác để tôi có thể tra cứu cho bạn.",
+    "latency_ms": 1161.54
   }
 ]
